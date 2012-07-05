@@ -13,7 +13,7 @@ unset GIT_DIR
 # config
 SCONS_VERSION="1.2.0"
 S3_BUCKET="heroku-buildpack-nodejs"
-ETHERPAD_MODULE_SRC="node_modules/ep_etherpad-lite/"
+ETHERPAD_MODULE_SRC="node_modules/ep_etherpad-lite"
 
 # parse and derive params
 BUILD_DIR=$1
@@ -187,12 +187,9 @@ export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 
 # link /node_modules/ep_etherpad-lite to ./src 
-echo "-----> Link ep_etherpad-lite module"
-(
-  mkdir -p "$BUILD_DIR/node_modules"
+function link_etherpad_module() {
+  echo "-----> Link ep_etherpad-lite module"
   ln -v "$BUILD_DIR/node_modules/ep_etherpad-lite" "$BUILD_DIR/src"
-) || {
-  echo "Link Fail"
 }
 
 # install dependencies with npm
@@ -200,6 +197,7 @@ echo "-----> Installing dependencies with npm"
 
 run_npm "install --production"
 run_npm "rebuild"
+link_etherpad_module
 run_npm_etherpad "install --production"
 run_npm_etherpad "rebuild"
 
