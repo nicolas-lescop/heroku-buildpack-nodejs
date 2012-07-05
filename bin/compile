@@ -65,7 +65,7 @@ function run_npm_etherpad() {
   command="$1"
 
   cd $BUILD_DIR/$ETHERPAD_MODULE_SRC
-  HOME="$BUILD_DIR/$ETHERPAD_MODULE_SRC" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js $command 2>&1 | indent
+  HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js $command 2>&1 | indent
 
   if [ "${PIPESTATUS[*]}" != "0 0" ]; then
     echo " !     Failed to $command dependencies with npm"
@@ -189,7 +189,8 @@ export CPPPATH="$INCLUDE_PATH"
 # link /node_modules/ep_etherpad-lite to ./src 
 function link_etherpad_module() {
   echo "-----> Link ep_etherpad-lite module"
-  ln -v "$BUILD_DIR/node_modules/ep_etherpad-lite" "$BUILD_DIR/src"
+  cd $BUILD_DIR/node_modules
+  ln -s "../src" "ep_etherpad-lite"
 }
 
 # install dependencies with npm
@@ -206,6 +207,5 @@ echo `pwd`
 echo $BUILD_DIR
 echo $HOME
 echo "-----> END DEBUG"
-
 
 echo "Dependencies installed" | indent
