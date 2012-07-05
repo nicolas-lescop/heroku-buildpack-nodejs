@@ -13,16 +13,19 @@ unset GIT_DIR
 # config
 SCONS_VERSION="1.2.0"
 S3_BUCKET="heroku-buildpack-nodejs"
+ETHERPAD_MODULE_SRC="node_modules/ep_etherpad-lite/"
 
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
-echo '-------------------------------------------> DEBUG =>'
+echo "-----> START DEBUG "
 echo `pwd`
+echo `cd $BUILD_DIR/src; pwd`
 echo $BUILD_DIR
-echo '-------------------------------------------> END DEBUG */ '
+echo "$(dirname $0)"
+echo "-----> END DEBUG"
 
 function error() {
   echo " !     $*" >&2
@@ -171,6 +174,15 @@ export CPPPATH="$INCLUDE_PATH"
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
+
 run_npm "install --production"
 run_npm "rebuild"
+
+echo "-----> START DEBUG"
+echo `pwd` | indent
+echo $BUILD_DIR | indent
+echo $HOME | indent
+echo "-----> END DEBUG" | indent
+
+
 echo "Dependencies installed" | indent
