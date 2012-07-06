@@ -177,19 +177,17 @@ INCLUDE_PATH="$VENDORED_NODE/include"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 
+echo "-----> Link ep_etherpad-lite module"
 # link /node_modules/ep_etherpad-lite to ./src 
-function link_etherpad_module() {
-  echo "-----> Link ep_etherpad-lite module"
-  cd $BUILD_DIR/node_modules
-  ln -s "../src" "ep_etherpad-lite"
-}
+mkdir -p "$BUILD_DIR/node_modules"
+cd $BUILD_DIR/node_modules
+ln -s "../src" "ep_etherpad-lite"
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
 
 #run_npm "install --production"
 #run_npm "rebuild"
-link_etherpad_module
 run_npm_etherpad "install"
 run_npm_etherpad "rebuild"
 
