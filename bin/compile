@@ -20,15 +20,6 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
-echo "-----> START DEBUG penis"
-echo `pwd`
-echo `cd $BUILD_DIR/src; pwd`
-echo $BUILD_DIR
-echo "$(dirname $0)"
-echo "-----> END DEBUG"
-
-
-
 function error() {
   echo " !     $*" >&2
   exit 1
@@ -202,10 +193,7 @@ link_etherpad_module
 run_npm_etherpad "install --production"
 run_npm_etherpad "rebuild"
 
-echo "-----> START DEBUG"
-echo `pwd`
-echo $BUILD_DIR
-echo $HOME
-echo "-----> END DEBUG"
+echo "-----> Install mongodb for ueberDB"
+cp "$BUILD_DIR/build/mongodb_db.js" "$BUILD_DIR/src/node_modules/ueberDB/mongodb_db.js"
 
 echo "Dependencies installed" | indent
